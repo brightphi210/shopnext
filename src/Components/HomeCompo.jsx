@@ -4,6 +4,7 @@ import React, { useEffect, useState } from 'react'
 import Image from 'next/image'
 import heroImage from '../Components/images/hero.webp'
 import product from '../Components/images/plant-based protein.jpg'
+import Link from 'next/link'
 
 const HomeCompo = () => {
 
@@ -93,8 +94,9 @@ const HomeCompo = () => {
               ) : (
                 <div className='grid grid-cols-4 pt-10 gap-5'>
 
-                  {productsData.map((product)=>(
-                      <div className='cursor-pointer'>
+                  {productsData.map((product, index)=>(
+                    <Link href={`single/${product.id}`}>
+                      <div className='cursor-pointer' key={index}>
                         <div className='w-full h-[18rem] rounded-xl overflow-hidden'>
                           <Image 
                             src={product.image} 
@@ -107,6 +109,7 @@ const HomeCompo = () => {
                         <p>{product.description}</p>
                         <p>${product.price}</p>
                       </div>
+                      </Link>
                   ))}
 
                 </div>
