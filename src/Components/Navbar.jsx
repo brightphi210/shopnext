@@ -2,7 +2,7 @@
 'use client'
 
 
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import logo from '../Components/images/logo.svg'
 import Image from 'next/image'
 import { FiSearch } from "react-icons/fi";
@@ -14,11 +14,37 @@ import product from '../Components/images/detail1.webp'
 const Navbar = () => {
 
     const [showModal, setShowModal] = useState(false);
+    const [lenthofData, setLengthData] = useState(0);
 
     const handleShowModal = () =>{
         setShowModal(!showModal)
     }
 
+
+       const url2 = `http://127.0.0.1:8000/orderitems/`
+
+    const getDataLength = async () =>{
+        try {
+            const res = await fetch(url2, {
+                method : 'GET',
+                headers : {
+                    'Content-Type' : 'application/json'
+                },
+            })
+            
+            const data = await res.json()
+            setLengthData(data)
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+
+    useEffect(()=>{
+        getDataLength()
+    }, [])
+
+    console.log(lenthofData.length);
   return (
     <div className='flex px-48 py-6 items-center justify-between'>
 
@@ -34,7 +60,9 @@ const Navbar = () => {
             </ul>
             <p className='cursor-pointer'><FiSearch /></p>
             <p className='cursor-pointer'><IoPerson /></p>
-            <p className='cursor-pointer' onClick={handleShowModal}><BsMinecart /></p>
+            <p className='cursor-pointer relative' onClick={handleShowModal}><BsMinecart />
+                <span className='absolute -right-5 -top-3 text-white bg-red-600 text-sm p-1 px-2 flex justify-center items-center rounded-full'>{lenthofData.length}</span>
+            </p>
         </div>
 
         {showModal === true ? (
